@@ -1,5 +1,5 @@
 FROM quay.io/evryfs/base-ubuntu:master
-ARG RUNNER_ARCHIVE=https://github.com/actions/runner/releases/download/v2.168.0/actions-runner-linux-x64-2.168.0.tar.gz
+ARG RUNNER_ARCHIVE=https://github.com/actions/runner/releases/download/v2.169.0/actions-runner-linux-x64-2.169.0.tar.gz
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3008
 RUN useradd -mr -d /runner runner && \
