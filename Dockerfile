@@ -9,7 +9,7 @@ RUN useradd -mr -d /runner runner && \
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
   add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
   apt-get -y update && \
-  apt-get -y --no-install-recommends install docker-ce-cli && \
+  apt-get -y --no-install-recommends install docker-ce-cli jq && \
   curl -sL https://deb.nodesource.com/setup_12.x | bash && \
   apt-get -y clean && \
   rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
