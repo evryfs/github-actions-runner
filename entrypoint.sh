@@ -3,6 +3,7 @@ set -e
 readonly GH_API_ENDPOINT=https://api.github.com
 
 removeRunner() {
+  echo "Performing unattended remove of runner..."
   ./config.sh remove --unattended
 }
 
