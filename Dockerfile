@@ -5,7 +5,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN useradd -mr -d /runner runner && \
   curl -sL ${RUNNER_ARCHIVE} | tar xzvC /runner && \
   /runner/bin/installdependencies.sh && \
-  apt-get -y --no-install-recommends install lsb-release software-properties-common gnupg-agent && \
+  apt-get -y --no-install-recommends install lsb-release software-properties-common gnupg-agent git && \
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
   add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
   apt-get -y update && \
