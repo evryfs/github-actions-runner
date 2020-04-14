@@ -17,6 +17,6 @@ RUNNER_TOKEN=${RUNNER_TOKEN:-$(curl -sL -H "Authorization: token ${GH_TOKEN}" -X
 
 ./config.sh --unattended --replace --url "${RUNNER_URL}" --token "${RUNNER_TOKEN}"
 
-RUNNER_ARGS="--once"
+#RUNNER_ARGS="--once"
 exec "./run.sh" "${RUNNER_ARGS}"
 #./config.sh remove --unattended
