@@ -13,6 +13,7 @@ RUN useradd -mr -d /runner runner && \
   curl -sL https://deb.nodesource.com/setup_12.x | bash && \
   apt-get -y clean && \
   rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN curl -sL https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose && chmod a+rx /usr/local/bin/docker-compose
 COPY entrypoint.sh /
 WORKDIR /runner
 USER runner
