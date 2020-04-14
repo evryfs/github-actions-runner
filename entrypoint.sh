@@ -1,17 +1,22 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 readonly GH_API_ENDPOINT=https://api.github.com
 
-removeRunner() {
-  echo "Performing unattended remove of runner..."
-  ./config.sh remove --unattended
-}
+if [ -z "$GH_REPO" ]
+then
+  # org-level runners: https://github.com/actions/runner/issues/245
+  readonly TOKEN_URL=${GH_API_ENDPOINT}/orgs/${GH_ORG}/actions/runners/registration-token
+  readonly RUNNER_URL=https://github.com/${GH_ORG}
+else
+  # per repo runner
+  readonly TOKEN_URL=${GH_API_ENDPOINT}/repos/${GH_ORG}/${GH_REPO}/actions/runners/registration-token
+  readonly RUNNER_URL="https://github.com/${GH_ORG}/${GH_REPO}"
+fi
 
-RUNNER_TOKEN=${RUNNER_TOKEN:-$(curl -sL -H "Authorization: token ${GH_TOKEN}" -XPOST "${GH_API_ENDPOINT}/repos/${GH_ORG}/${GH_REPO}/actions/runners/registration-token"| jq -r .token)}
-RUNNER_URL=${RUNNER_URL-$([[ -z "$GH_REPO" ]] && echo "https://github.com/${GH_ORG}/${GH_REPO}" || echo "https://github.com/${GH_ORG}" )}
+RUNNER_TOKEN=${RUNNER_TOKEN:-$(curl -sL -H "Authorization: token ${GH_TOKEN}" -XPOST "${TOKEN_URL}" | jq -r .token)}
+
 ./config.sh --unattended --replace --url "${RUNNER_URL}" --token "${RUNNER_TOKEN}"
-
-trap 'removeRunner' QUIT TERM
 
 RUNNER_ARGS="--once"
 exec "./run.sh" "${RUNNER_ARGS}"
+#./config.sh remove --unattended
