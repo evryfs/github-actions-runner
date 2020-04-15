@@ -15,7 +15,7 @@ RUN useradd -mr -d /runner runner && \
   apt-get -y clean && \
   rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN curl -sL https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose && chmod a+rx /usr/local/bin/docker-compose
-COPY entrypoint.sh /
+COPY entrypoint.sh remove_runner.sh /
 WORKDIR /runner
 USER runner
 ENTRYPOINT ["/entrypoint.sh"]
