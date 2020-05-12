@@ -1,5 +1,5 @@
 FROM quay.io/evryfs/base-ubuntu:bionic-20200403
-ARG RUNNER_VERSION=2.262.0
+ARG RUNNER_VERSION=2.262.1
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3008
 RUN useradd -mr -d /runner runner && \
