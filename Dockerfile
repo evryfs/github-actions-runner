@@ -2,9 +2,9 @@ FROM quay.io/evryfs/base-ubuntu:bionic-20200403
 ARG RUNNER_VERSION=2.263.0
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3008
-RUN useradd -mr -d /runner runner && \
-  curl -sL https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz | tar xzvC /runner && \
-  /runner/bin/installdependencies.sh && \
+RUN useradd -mr -d /home/runner runner && \
+  curl -sL https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz | tar xzvC /home/runner && \
+  /home/runner/bin/installdependencies.sh && \
   apt-get -y --no-install-recommends install lsb-release software-properties-common gnupg-agent openssh-client && \
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
   add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
@@ -16,6 +16,6 @@ RUN useradd -mr -d /runner runner && \
   rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN curl -sL https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose && chmod a+rx /usr/local/bin/docker-compose
 COPY entrypoint.sh remove_runner.sh /
-WORKDIR /runner
+WORKDIR /home/runner
 USER runner
 ENTRYPOINT ["/entrypoint.sh"]
