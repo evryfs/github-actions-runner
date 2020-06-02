@@ -13,7 +13,8 @@ RUN useradd -mr -d /home/runner runner && \
   apt-get -y --no-install-recommends install docker-ce-cli jq git && \
   curl -sL https://deb.nodesource.com/setup_12.x | bash && \
   apt-get -y clean && \
-  rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+  ln -s /home/runner/externals/node12/bin/node /usr/local/bin/node
 RUN curl -sL https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose && chmod a+rx /usr/local/bin/docker-compose
 COPY entrypoint.sh remove_runner.sh /
 WORKDIR /home/runner
