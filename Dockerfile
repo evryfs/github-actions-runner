@@ -1,4 +1,4 @@
-FROM quay.io/evryfs/base-ubuntu:bionic-20200630
+FROM quay.io/evryfs/base-ubuntu:bionic-20200713
 ARG RUNNER_VERSION=2.267.1
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3008
