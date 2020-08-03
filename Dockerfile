@@ -15,7 +15,7 @@ RUN useradd -mr -d /home/runner runner && \
   apt-get -y clean && \
   rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
   ln -s /home/runner/externals/node12/bin/node /usr/local/bin/node
-RUN curl -sL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose && chmod a+rx /usr/local/bin/docker-compose
+RUN curl -sL "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose && chmod a+rx /usr/local/bin/docker-compose
 COPY entrypoint.sh remove_runner.sh /
 WORKDIR /home/runner
 USER runner
