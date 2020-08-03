@@ -1,5 +1,5 @@
 FROM quay.io/evryfs/base-ubuntu:bionic-20200713
-ARG RUNNER_VERSION=2.272.0
+ARG RUNNER_VERSION=2.272.0 COMPOSE_VERSION=1.26.2
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3008
 RUN useradd -mr -d /home/runner runner && \
@@ -15,7 +15,7 @@ RUN useradd -mr -d /home/runner runner && \
   apt-get -y clean && \
   rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
   ln -s /home/runner/externals/node12/bin/node /usr/local/bin/node
-RUN curl -sL https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose && chmod a+rx /usr/local/bin/docker-compose
+RUN curl -sL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose && chmod a+rx /usr/local/bin/docker-compose
 COPY entrypoint.sh remove_runner.sh /
 WORKDIR /home/runner
 USER runner
