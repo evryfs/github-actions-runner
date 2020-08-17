@@ -1,5 +1,6 @@
 FROM quay.io/evryfs/base-ubuntu:bionic-20200713
-ARG RUNNER_VERSION=2.272.0 COMPOSE_VERSION=1.26.2
+ARG RUNNER_VERSION=2.272.0
+ARG COMPOSE_VERSION=1.26.2
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3008
 RUN useradd -mr -d /home/runner runner && \
