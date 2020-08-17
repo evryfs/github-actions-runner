@@ -5,7 +5,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN useradd -mr -d /home/runner runner && \
   curl -sL https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz | tar xzvC /home/runner && \
   /home/runner/bin/installdependencies.sh && \
-  apt-get -y --no-install-recommends install lsb-release software-properties-common gnupg-agent openssh-client && \
+  apt-get -y --no-install-recommends install lsb-release software-properties-common gnupg-agent openssh-client make && \
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
   add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
   add-apt-repository ppa:git-core/ppa && \
