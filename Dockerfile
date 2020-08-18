@@ -10,8 +10,10 @@ RUN useradd -mr -d /home/runner runner && \
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
   add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
   add-apt-repository ppa:git-core/ppa && \
+  curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+  echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
   apt-get -y update && \
-  apt-get -y --no-install-recommends install docker-ce-cli jq git && \
+  apt-get -y --no-install-recommends install docker-ce-cli jq git yarn && \
   curl -sL https://deb.nodesource.com/setup_12.x | bash && \
   apt-get -y clean && \
   rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
