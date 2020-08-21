@@ -1,4 +1,4 @@
-FROM quay.io/evryfs/base-ubuntu:bionic-20200713
+FROM quay.io/evryfs/base-ubuntu:bionic-20200807
 ARG RUNNER_VERSION=2.273.0
 ARG COMPOSE_VERSION=1.26.2
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
