@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "FAKE SNAP: Trying to execute 'snap ${@}' but snap are not supported on Docker, skipping it sorry."
+echo "FAKE SNAP: Trying to execute 'snap $*' but snap are not supported on Docker, skipping it sorry."
 
 # Trying to guess the binary name, just to make the script exit succesfully.
-touch /usr/local/bin/${2} && chmod +x /usr/local/bin/${2}
+touch /usr/local/bin/"${2}" && chmod +x /usr/local/bin/"${2}"
