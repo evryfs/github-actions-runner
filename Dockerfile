@@ -6,8 +6,11 @@ ARG COMPOSE_VERSION=1.261.2
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu18/20200817.1
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # Install base packages.
-RUN apt update && apt install -y \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     git \
     sudo \
     lsb-release \
@@ -22,7 +25,7 @@ RUN apt update && apt install -y \
 # Install docker cli.
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
-    apt-get install -y docker-ce-cli && \
+    apt-get install -y --no-install-recommends docker-ce-cli && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -46,7 +49,6 @@ RUN useradd -mr -d /home/runner runner && \
 RUN apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 COPY entrypoint.sh remove_runner.sh /
 WORKDIR /home/runner
 USER runner
