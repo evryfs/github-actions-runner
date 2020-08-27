@@ -11,21 +11,21 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Install base packages.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    git \
-    sudo \
-    lsb-release \
-    software-properties-common \
-    gnupg-agent \
-    openssh-client \
-    make \
-    jq && \
+    git=1:2.* \
+    sudo=1.8.* \
+    lsb-release=9.* \
+    software-properties-common=0.96.* \
+    gnupg-agent=2.2.* \
+    openssh-client=1:7.* \
+    make=4.*\
+    jq=1.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install docker cli.
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
-    apt-get install -y --no-install-recommends docker-ce-cli && \
+    apt-get install -y --no-install-recommends docker-ce-cli=5:19.03.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
