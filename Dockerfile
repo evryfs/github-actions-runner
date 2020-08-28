@@ -31,7 +31,6 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
 
 # Copy scripts.
 COPY scripts/install-from-virtual-env /usr/local/bin/install-from-virtual-env
-COPY scripts/snap /usr/local/bin/snap
 
 # Install base packages from the virtual environment.
 RUN install-from-virtual-env basic
