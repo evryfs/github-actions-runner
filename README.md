@@ -15,6 +15,26 @@ like the ones who try to install `snap` packages.
 
 Here you can find the (installers)[https://github.com/actions/virtual-environments/tree/main/images/linux/scripts/installer] here.
 
+## Configurations
+
+Github Actions Runner can be configured dynamically using env vars with the following prefix `ACTIONS_RUNNER_INPUT_`.
+
+At the time of writing the configuration options are:
+
+```
+Config Options:
+ --unattended           Disable interactive prompts for missing arguments. Defaults will be used for missing options
+ --url string           Repository to add the runner to. Required if unattended
+ --token string         Registration token. Required if unattended
+ --name string          Name of the runner to configure (default 29b09814cbea)
+ --runnergroup string   Name of the runner group to add this runner to (defaults to the default runner group)
+ --labels string        Extra labels in addition to the default: 'self-hosted,Linux,X64'
+ --work string          Relative runner work directory (default _work)
+ --replace              Replace any existing runner with the same name (default false)
+```
+
+So if you want set custom labels you just need to export this env var: `ACTIONS_RUNNER_INPUT_LABELS=foobar, 1234`
+
 ### Install packages
 
 To run an installer and its packages you can just simply run `install-from-virtual-env <installer-file-name>` you can find
