@@ -10,7 +10,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Install base packages.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    git=1:2.* \
     sudo=1.8.* \
     lsb-release=9.* \
     software-properties-common=0.96.* \
@@ -20,6 +19,8 @@ RUN apt-get update && \
     jq=1.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN add-apt-repository -y ppa:git-core/ppa && apt update && apt -y install git && apt-get -y clean && rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install docker cli.
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
