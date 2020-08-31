@@ -7,13 +7,14 @@ Also see [the Kubernetes operator](https://github.com/evryfs/github-actions-runn
 
 ## Usage
 
-In order to try mimin as much as possible the [github-hosted runner](https://docs.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners), we try to reuse as much as possible of their installer scripts.
+In order to try mimin as much as possible what is done in the [github-hosted runner](https://docs.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners) project, we try to reuse their installer scripts.
 
-This image allows to use the [installers](https://github.com/actions/virtual-environments/tree/main/images/linux/scripts/installer) from the official [virtual-environments](https://github.com/actions/virtual-environments) project.
-The project has been designed to be executed on real VM instead of Docker containers and in some case the scripts can fail,
-like the ones who try to install `snap` packages.
+So this image will allow you to use the [installers](https://github.com/actions/virtual-environments/tree/main/images/linux/scripts/installers) from the official [virtual-environments](https://github.com/actions/virtual-environments) project.
 
-Here you can find the [installers](https://github.com/actions/virtual-environments/tree/main/images/linux/scripts/installer) here.
+But since the original project has been designed to be executed on real VM instead of Docker containers, some scripts can fail,
+like the ones who try to install `snap` packages (since `snap` can't run on Docker).
+
+Here you can find the [list of available installers](https://github.com/actions/virtual-environments/tree/main/images/linux/scripts/installer).
 
 ## Configurations
 
@@ -37,5 +38,5 @@ So if you want set custom labels you just need to export this env var: `ACTIONS_
 
 ### Install packages
 
-To run an installer and its packages you can just simply run `install-from-virtual-env <installer-file-name>` you can find
+To run an installer script and its packages you can just simply run `install-from-virtual-env <installer-file-name>`. You can find
 some examples on the Dockerfile.
