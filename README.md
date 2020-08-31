@@ -7,7 +7,7 @@ Also see [the Kubernetes operator](https://github.com/evryfs/github-actions-runn
 
 ## Usage
 
-In order to try mimin as much as possible what is done in the [github-hosted runner](https://docs.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners) project, we try to reuse their installer scripts.
+In order to try mimic as much as possible what is done in the [github-hosted runner](https://docs.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners) project, we try to reuse their installer scripts.
 
 So this image will allow you to use the [installers](https://github.com/actions/virtual-environments/tree/main/images/linux/scripts/installers) from the official [virtual-environments](https://github.com/actions/virtual-environments) project.
 
