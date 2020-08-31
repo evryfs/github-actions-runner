@@ -20,7 +20,12 @@ RUN apt-get update && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN add-apt-repository -y ppa:git-core/ppa && apt-get update && apt-get -y install git && apt-get -y clean && rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Update git.
+RUN add-apt-repository -y ppa:git-core/ppa && \
+    apt-get update && \
+    apt-get -y install --no-install-recommends git=1:2.28.* && \
+    apt-get -y clean && \
+    rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install docker cli.
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
