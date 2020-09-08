@@ -1,6 +1,6 @@
 FROM quay.io/evryfs/base-ubuntu:bionic-20200807
 
-ARG RUNNER_VERSION=2.273.0
+ARG RUNNER_VERSION=2.273.1
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu18/20200817.1
