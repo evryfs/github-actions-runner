@@ -1,4 +1,4 @@
-FROM quay.io/evryfs/base-ubuntu:bionic-20200807
+FROM quay.io/evryfs/base-ubuntu:bionic-20200903
 
 ARG RUNNER_VERSION=2.273.3
 
