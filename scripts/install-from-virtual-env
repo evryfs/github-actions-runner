@@ -11,8 +11,8 @@ git config --global advice.detachedHead false
 
 
 generate_toolset_json() {
-    local release=$(lsb_release -rs | sed 's/\.//')
-    cp $TEMPLATE_DIR/toolsets/toolset-${release}.json $INSTALLER_SCRIPT_FOLDER/toolset.json
+    local release="$(lsb_release -rs | sed 's/\.//')"
+    cp $TEMPLATE_DIR/toolsets/toolset-$release.json $INSTALLER_SCRIPT_FOLDER/toolset.json
 }
 
 setup_virtual_env() {
