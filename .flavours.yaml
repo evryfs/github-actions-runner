@@ -1,0 +1,5 @@
+_:
+  installs: "basic python nodejs"
+
+gcloud:
+  installs: "basic python nodejs google-cloud-sdk"

@@ -5,10 +5,25 @@ set -e
 export METADATA_FILE=/metadatafile
 export HELPER_SCRIPTS=/virtual-environments/images/linux/scripts/helpers
 export SCRIPT_PATH=/virtual-environments/images/linux/scripts/installers
+export TEMPLATE_DIR=/virtual-environments/images/linux
+export INSTALLER_SCRIPT_FOLDER=/virtual-environments/installer
 git config --global advice.detachedHead false
+
+
+generate_toolset_json() {
+    local release="$(lsb_release -rs | sed 's/\.//')"
+    cp $TEMPLATE_DIR/toolsets/toolset-$release.json $INSTALLER_SCRIPT_FOLDER/toolset.json
+}
+
+setup_virtual_env() {
+    mkdir -p $INSTALLER_SCRIPT_FOLDER
+    generate_toolset_json
+}
+
 
 if [ ! -d /virtual-environments ]; then
     git clone --branch "${VIRTUAL_ENVIRONMENT_VERSION}" --single-branch https://github.com/actions/virtual-environments /virtual-environments
+    setup_virtual_env
 fi
 
 if [ ! -f /etc/apt/trusted.gpg.d/microsoft.gpg ]; then
@@ -28,5 +43,3 @@ fi
 
 chmod +x ${SCRIPT_PATH}/"${SCRIPT}"
 ${SCRIPT_PATH}/"${SCRIPT}"
-
-

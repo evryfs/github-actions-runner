@@ -1,20 +1,23 @@
-FROM quay.io/evryfs/base-ubuntu:bionic-20200921
+FROM quay.io/evryfs/base-ubuntu:focal-20200925
 
 ARG RUNNER_VERSION=2.273.4
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
-ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu18/20200817.1
+ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20200920.1
+ARG VIRTUAL_ENV_INSTALLS="{{ (index (datasource "flavours") (getenv "FLAVOUR" "_")).installs }}"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+COPY conf/dpkg.cfg.d /etc/dpkg/dpkg.cfg.d/
 
 # Install base packages.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     sudo=1.8.* \
-    lsb-release=9.* \
-    software-properties-common=0.96.* \
+    lsb-release=11.* \
+    software-properties-common=0.98.* \
     gnupg-agent=2.2.* \
-    openssh-client=1:7.* \
+    openssh-client=1:8.* \
     make=4.*\
     jq=1.* && \
     apt-get -y clean && \
@@ -38,20 +41,16 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
 COPY scripts/install-from-virtual-env /usr/local/bin/install-from-virtual-env
 
 # Install base packages from the virtual environment.
-RUN install-from-virtual-env basic
-RUN install-from-virtual-env python
-RUN install-from-virtual-env aws
-RUN install-from-virtual-env docker-compose
-RUN install-from-virtual-env nodejs
+RUN for package in ${VIRTUAL_ENV_INSTALLS}; do \
+        install-from-virtual-env $package; \
+    done && \
+    apt-get -y clean && \
+    rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install runner and its dependencies.
-RUN useradd -mr -d /home/runner runner && \
+RUN useradd -u 1001 -mr -d /home/runner runner && \
     curl -sL "https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz" | tar xzvC /home/runner && \
     /home/runner/bin/installdependencies.sh
-
-# Clean apt cache.
-RUN apt-get -y clean && \
-    rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY entrypoint.sh remove_runner.sh /
 WORKDIR /home/runner
