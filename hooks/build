@@ -13,5 +13,5 @@ release=${parts[1]}
 release_list_fromtemplate | while read line; do
   read tag dockerfile <<< $(echo $line)
   docker build \
-    --build-arg RUNNER_VERSION=$version -t $DOCKER_REPO:$tag -f $dockerfile .
+    --build-arg RUNNER_VERSION=${version#v} -t $DOCKER_REPO:$tag -f $dockerfile .
 done
