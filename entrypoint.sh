@@ -15,4 +15,6 @@ fi
 
 RUNNER_TOKEN=${RUNNER_TOKEN:-$(curl -sL -H "Authorization: token ${GH_TOKEN}" -XPOST "${TOKEN_URL}" | jq -r .token)}
 ./config.sh --unattended --replace --url "${RUNNER_URL}" --token "${RUNNER_TOKEN}"
+
+unset GH_TOKEN
 exec "./run.sh" "${RUNNER_ARGS}"
