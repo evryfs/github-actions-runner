@@ -1,10 +1,11 @@
 FROM quay.io/evryfs/base-ubuntu:focal-20200925
 
 ARG RUNNER_VERSION=2.273.4
-ARG VIRTUAL_ENV_INSTALLS="basic python nodejs"
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20200920.1
+ARG VIRTUAL_ENV_INSTALLS="{{ (index (datasource "flavours") (getenv "FLAVOUR" "_")).installs }}"
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 COPY conf/dpkg.cfg.d /etc/dpkg/dpkg.cfg.d/
@@ -47,7 +48,7 @@ RUN for package in ${VIRTUAL_ENV_INSTALLS}; do \
     rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install runner and its dependencies.
-RUN useradd -mr -d /home/runner runner && \
+RUN useradd -u 1001 -mr -d /home/runner runner && \
     curl -sL "https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz" | tar xzvC /home/runner && \
     /home/runner/bin/installdependencies.sh
 
