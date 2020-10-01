@@ -10,7 +10,7 @@ version=${parts[0]}
 release=${parts[1]}
 
 ## Builds multiflavour images
-release_list_fromtemplate | while read line; do
+release_list_from_template Dockerfile.gotmpl | while read line; do
   read tag dockerfile <<< $(echo $line)
   docker build \
     --build-arg RUNNER_VERSION=${version#v} -t $DOCKER_REPO:$tag -f $dockerfile .

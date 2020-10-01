@@ -7,7 +7,7 @@ IFS='-' read -r -a parts <<< "$GIT_BRANCH"
 version=${parts[0]}
 release=${parts[1]}
 
-release_list_from_template | while read line; do
+release_list_from_template Dockerfile.gotmpl | while read line; do
   read tag dockerfile <<< "$line"
 
   stripped_release="${tag%-r*}"

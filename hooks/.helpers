@@ -1,6 +1,5 @@
 #!/bin/bash
-
-bindir=/usr/local/bin
+tmpdir=/tmp
 
 JQ_URL="https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64"
 JQ_SUM="af986793a515d500ab2d35f8d2aecd656e764504b789b66d7e1a0b727a124c44"
@@ -10,16 +9,21 @@ GOMPLATE_SUM="847f7d9fc0dc74c33188c2b0d0e9e4ed9204f67c36da5aacbab324f8bfbf29c9"
 fetch_binaries() {
   for package in "$@"; do
     local url=$(eval echo "\$${package^^}_URL") sum=$(eval echo "\$${package^^}_SUM")
-    curl -sSLo $bindir/$package "$url" && printf "$sum  $bindir/$package" | sha256sum -c && echo "$package installed" || {
-      >&2 echo "Unable to install $1 from $url!";
-      return 1;
-    }
+
+    if [ ! -x $package ]; then
+      curl -sSLo $tmpdir/$package "$url" && printf "$sum  $tmpdir/$package" | sha256sum -c && echo "$package installed" || {
+        >&2 echo "Unable to install $1 from $url!";
+        return 1;
+      }
+      chmod +x "$tmpdir/$package"
+    fi
+
   done
 }
 
 flavours() {
-  which gomplate || fetch_binaries gomplate
-  gomplate -d flavours=.flavours.yaml -i '{{ join (keys (datasource "flavours")) " " }}'
+  fetch_binaries gomplate
+  $tmpdir/gomplate -d flavours=.flavours.yaml -i '{{ join (keys (datasource "flavours")) " " }}'
 }
 
 ## Print a release list (tag docker) pairs, like bellow:
@@ -29,10 +33,11 @@ flavours() {
 release_list_from_template() {
   local flavour rendered tpl="$1"
 
-  for flavour in flavours(); do
-    rendered="/tmp/$$.Dockerfile.$flavour"
-    gomplate -d flavours=.flavours.yaml -f $tpl > $rendered
-    rendered="${rendered%._}"
+  for flavour in $(flavours); do
+    rendered="$tmpdir/$$.Dockerfile.$flavour"
+    export FLAVOUR="$flavour"
+
+    $tmpdir/gomplate -d flavours=.flavours.yaml -f $tpl > $rendered
     tag="${version}-${flavour}-${release}"
     tag=$(echo $tag | sed -e 's/-_-/-/' -e 's/-$//')
 
