@@ -3,7 +3,7 @@ FROM quay.io/evryfs/base-ubuntu:bionic-20200921
 ARG RUNNER_VERSION=2.273.5
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
-ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu18/20200817.1
+ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu18/20201015.1
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -36,6 +36,8 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
 
 # Copy scripts.
 COPY scripts/install-from-virtual-env /usr/local/bin/install-from-virtual-env
+
+RUN curl https://raw.githubusercontent.com/actions/virtual-environments/main/images/linux/toolsets/toolset-1804.json -o /toolset.json
 
 # Install base packages from the virtual environment.
 RUN install-from-virtual-env basic
