@@ -37,7 +37,7 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
 # Copy scripts.
 COPY scripts/install-from-virtual-env /usr/local/bin/install-from-virtual-env
 
-RUN curl https://raw.githubusercontent.com/actions/virtual-environments/main/images/linux/toolsets/toolset-1804.json -o /toolset.json
+RUN curl https://raw.githubusercontent.com/actions/virtual-environments/${VIRTUAL_ENVIRONMENT_VERSION}/images/linux/ubuntu1804.json  > /toolset.json
 
 # Install base packages from the virtual environment.
 RUN install-from-virtual-env basic
