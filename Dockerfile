@@ -1,10 +1,10 @@
-FROM quay.io/evryfs/base-ubuntu:bionic-20200921
+FROM quay.io/evryfs/base-ubuntu:focal-20201008
 
 ARG RUNNER_VERSION=2.273.5
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
-ARG UBUNTU_VERSION=1804
-ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu18/20201026.1
+ARG UBUNTU_VERSION=2004
+ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20201026.1
 
 ENV UBUNTU_VERSION=${UBUNTU_VERSION} VIRTUAL_ENVIRONMENT_VERSION=${VIRTUAL_ENVIRONMENT_VERSION}
 
@@ -14,10 +14,10 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     sudo=1.8.* \
-    lsb-release=9.* \
-    software-properties-common=0.96.* \
+    lsb-release=11.1.* \
+    software-properties-common=0.98.* \
     gnupg-agent=2.2.* \
-    openssh-client=1:7.* \
+    openssh-client=1:8.* \
     make=4.*\
     jq=1.* && \
     apt-get -y clean && \
