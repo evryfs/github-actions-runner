@@ -3,7 +3,10 @@ FROM quay.io/evryfs/base-ubuntu:bionic-20200921
 ARG RUNNER_VERSION=2.273.5
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
-ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu18/20200817.1
+ARG UBUNTU_VERSION=1804
+ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu18/20201026.1
+
+ENV UBUNTU_VERSION=${UBUNTU_VERSION} VIRTUAL_ENVIRONMENT_VERSION=${VIRTUAL_ENVIRONMENT_VERSION}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 

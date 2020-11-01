@@ -5,6 +5,7 @@ set -e
 export METADATA_FILE=/metadatafile
 export HELPER_SCRIPTS=/virtual-environments/images/linux/scripts/helpers
 export SCRIPT_PATH=/virtual-environments/images/linux/scripts/installers
+export INSTALLER_SCRIPT_FOLDER=/virtual-environments/images/linux/scripts/installers
 git config --global advice.detachedHead false
 
 if [ ! -d /virtual-environments ]; then
@@ -14,6 +15,11 @@ fi
 if [ ! -f /etc/apt/trusted.gpg.d/microsoft.gpg ]; then
     chmod +x /virtual-environments/images/linux/scripts/base/repos.sh
     /virtual-environments/images/linux/scripts/base/repos.sh
+fi
+
+if [ ! -f ${INSTALLER_SCRIPT_FOLDER}/toolset.json ]; then
+    cp /virtual-environments/images/linux/toolsets/toolset-"${UBUNTU_VERSION}".json "${INSTALLER_SCRIPT_FOLDER}"/toolset.json
+    cp /virtual-environments/images/linux/toolsets/toolcache-"${UBUNTU_VERSION}".json "${INSTALLER_SCRIPT_FOLDER}"/toolcache.json
 fi
 
 if [ -z "$1" ]; then
@@ -28,5 +34,4 @@ fi
 
 chmod +x ${SCRIPT_PATH}/"${SCRIPT}"
 ${SCRIPT_PATH}/"${SCRIPT}"
-
 
