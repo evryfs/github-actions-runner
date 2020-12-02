@@ -19,7 +19,6 @@ fi
 
 if [ ! -f ${INSTALLER_SCRIPT_FOLDER}/toolset.json ]; then
     cp /virtual-environments/images/linux/toolsets/toolset-"${UBUNTU_VERSION}".json "${INSTALLER_SCRIPT_FOLDER}"/toolset.json
-    cp /virtual-environments/images/linux/toolsets/toolcache-"${UBUNTU_VERSION}".json "${INSTALLER_SCRIPT_FOLDER}"/toolcache.json
 fi
 
 if [ -z "$1" ]; then
