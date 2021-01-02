@@ -4,7 +4,7 @@ set -e
 if [ -z "$RUNNER_TOKEN" ]
 then
   echo "Must define RUNNER_TOKEN variable"
-  exit -1
+  exit 255
 fi
 
 if [ -z "$GH_REPO" ]
