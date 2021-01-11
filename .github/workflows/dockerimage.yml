@@ -50,5 +50,5 @@ jobs:
           context: .
           file: ./Dockerfile.${{ matrix.df }}
           push: ${{ steps.image.outputs.runsOnTag }}
-          tags: ${{ steps.image.outputs.tags }}
+          tags: ${{ steps.image.outputs.images }}
           build-args: ${{ env.BUILD_ARGS }}
