@@ -66,6 +66,8 @@ ARG VIRTUAL_ENV_INSTALLS="basic python nodejs google-cloud-sdk"
 RUN for package in ${VIRTUAL_ENV_INSTALLS}; do \
         install-from-virtual-env $package; \
     done && \
+    # add gosu \
+    apt-get -y install gosu && \
     apt-get -y clean && \
     rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -76,6 +78,4 @@ RUN useradd -u 1001 -mr -d /home/runner runner && \
     /home/runner/bin/installdependencies.sh
 
 WORKDIR /home/runner
-USER runner
-
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/usr/sbin/gosu", "runner", "/entrypoint.sh"]
