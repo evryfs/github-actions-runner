@@ -63,7 +63,8 @@ COPY entrypoint.sh remove_runner.sh /
 
 # Install base packages from the virtual environment.
 ARG VIRTUAL_ENV_INSTALLS="basic python nodejs google-cloud-sdk"
-RUN for package in ${VIRTUAL_ENV_INSTALLS}; do \
+RUN apt-get -y update && \
+    for package in ${VIRTUAL_ENV_INSTALLS}; do \
         install-from-virtual-env $package; \
     done && \
     # add gosu \

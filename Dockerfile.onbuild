@@ -63,7 +63,8 @@ COPY entrypoint.sh remove_runner.sh /
 
 # Install base packages from the virtual environment.
 ONBUILD ARG VIRTUAL_ENV_INSTALLS="basic python nodejs"
-ONBUILD RUN for package in ${VIRTUAL_ENV_INSTALLS}; do \
+ONBUILD RUN apt-get -y update && \
+    for package in ${VIRTUAL_ENV_INSTALLS}; do \
         install-from-virtual-env $package; \
     done && \
     # add gosu \
