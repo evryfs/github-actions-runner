@@ -1,11 +1,54 @@
-name: Docker Image CI
+name: Docker Build and Push
 on: [push, pull_request]
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: Build Image Flavour
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        include:
+          - flavour: ""
+            df: default
+          - flavour: onbuild
+            df: onbuild
+          - flavour: gcloud
+            df: gcloud
+
     steps:
-    - uses: actions/checkout@v2
-    - uses: ludeeus/action-shellcheck@1.0.0
-    - uses: brpaz/hadolint-action@v1.3.1
-    - run: |
-        docker build .
+      -
+        uses: actions/checkout@v2
+      -
+        name: Generate release tags for Docker Image
+        uses: dysnix/docker-release-tags-action@master
+        id: image
+        with:
+          image: dysnix/github-actions-runner
+          release-only: false
+          flavour: ${{ matrix.flavour }}
+      -
+        uses: docker/setup-buildx-action@v1
+      -
+        uses: docker/login-action@v1
+        with:
+          username: services1dysnix
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: env
+        run: |
+          ## Version provided by tag
+          [[ -z "${{ steps.image.outputs.version }}" ]] || \
+            echo "BUILD_ARGS='RUNNER_VERSION=${{ steps.image.outputs.version }}'" >> ${GITHUB_ENV}
+
+      ## Rebuilding previous runners (older tags) is not required,
+      ## thus we always push the latest runner only
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile.${{ matrix.df }}
+          push: ${{ steps.image.outputs.runsOnTag }}
+          tags: ${{ steps.image.outputs.tags }}
+          build-args: ${{ env.BUILD_ARGS }}

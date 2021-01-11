@@ -1,0 +1,81 @@
+# Templated variables
+# 
+# 
+# 
+# 
+
+FROM quay.io/evryfs/base-ubuntu:focal-20201106
+
+ARG RUNNER_VERSION=2.275.1
+
+# This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
+ARG UBUNTU_VERSION=2004
+ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20201210.0
+
+ENV UBUNTU_VERSION=${UBUNTU_VERSION} VIRTUAL_ENVIRONMENT_VERSION=${VIRTUAL_ENVIRONMENT_VERSION}
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# Install base packages.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    sudo=1.8.* \
+    lsb-release=11.1.* \
+    software-properties-common=0.98.* \
+    gnupg-agent=2.2.* \
+    openssh-client=1:8.* \
+    make=4.*\
+    jq=1.* && \
+    apt-get -y clean && \
+    rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install base packages.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    sudo=1.8.* \
+    lsb-release=11.1.* \
+    software-properties-common=0.98.* \
+    gnupg-agent=2.2.* \
+    openssh-client=1:8.* \
+    make=4.*\
+    jq=1.* && \
+    apt-get -y clean && \
+    rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Update git.
+RUN add-apt-repository -y ppa:git-core/ppa && \
+    apt-get update && \
+    apt-get -y install --no-install-recommends git && \
+    apt-get -y clean && \
+    rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install docker cli.
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
+    apt-get install -y --no-install-recommends docker-ce-cli=5:19.03.* && \
+    apt-get -y clean && \
+    rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Copy scripts.
+COPY scripts/install-from-virtual-env /usr/local/bin/install-from-virtual-env
+COPY entrypoint.sh remove_runner.sh /
+
+
+# Install base packages from the virtual environment.
+ARG VIRTUAL_ENV_INSTALLS="basic python nodejs google-cloud-sdk"
+RUN for package in ${VIRTUAL_ENV_INSTALLS}; do \
+        install-from-virtual-env $package; \
+    done && \
+    apt-get -y clean && \
+    rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+
+# Install runner and its dependencies.
+RUN useradd -u 1001 -mr -d /home/runner runner && \
+    curl -sL "https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz" | sudo -u runner tar xzvC /home/runner && \
+    /home/runner/bin/installdependencies.sh
+
+WORKDIR /home/runner
+USER runner
+
+ENTRYPOINT ["/entrypoint.sh"]
