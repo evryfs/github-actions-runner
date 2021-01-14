@@ -56,7 +56,7 @@ RUN useradd -mr -d /home/runner runner && \
 RUN apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY entrypoint.sh remove_runner.sh /
+COPY entrypoint.sh /
 WORKDIR /home/runner
 USER runner
 ENTRYPOINT ["/entrypoint.sh"]
