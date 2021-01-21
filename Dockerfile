@@ -1,4 +1,4 @@
-FROM quay.io/evryfs/base-ubuntu:focal-20201106
+FROM quay.io/evryfs/base-ubuntu:focal-20210119
 
 ARG RUNNER_VERSION=2.275.1
 
