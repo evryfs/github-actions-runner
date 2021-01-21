@@ -31,5 +31,5 @@ fetch_gomplate
 
 # 2. update Dockerfiles
 for fl in $(flavours); do
-  FLAVOUR=$fl $GOMPL -d flavours=.flavours.yaml -f .docker.gotmpl > Dockerfile.$fl
+  FLAVOUR=$fl $GOMPL -d flavours=.flavours.yaml -f Dockerfile.gotmpl > Dockerfile.$fl
 done
