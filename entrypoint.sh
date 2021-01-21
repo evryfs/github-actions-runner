@@ -14,11 +14,8 @@ else
   readonly RUNNER_URL="https://github.com/${GH_ORG}/${GH_REPO}"
 fi
 
-## We try to mitigate https://github.community/t/how-to-run-multiple-self-hosted-runners-on-a-single-host/130474Race
-work_dir=$(mktemp -du -p .)
-work_dir="_work${work_dir#./tmp}"
 RUNNER_TOKEN=${RUNNER_TOKEN:-$(curl -sL -H "Authorization: token ${GH_TOKEN}" -XPOST "${TOKEN_URL}" | jq -r .token)}
-./config.sh --unattended --replace --url "${RUNNER_URL}" --token "${RUNNER_TOKEN}" --work "$work_dir"
+./config.sh --unattended --replace --url "${RUNNER_URL}" --token "${RUNNER_TOKEN}" --name "${HOSTNAME}"
 
 unset GH_TOKEN
-exec "./run.sh" --work "$work_dir" "${RUNNER_ARGS}"
+exec "./run.sh" "${RUNNER_ARGS}"
