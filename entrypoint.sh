@@ -14,8 +14,26 @@ else
   readonly RUNNER_URL="https://github.com/${GH_ORG}/${GH_REPO}"
 fi
 
-RUNNER_TOKEN=${RUNNER_TOKEN:-$(curl -sL -H "Authorization: token ${GH_TOKEN}" -XPOST "${TOKEN_URL}" | jq -r .token)}
-./config.sh --unattended --replace --url "${RUNNER_URL}" --token "${RUNNER_TOKEN}" --name "${HOSTNAME}"
+## Don't re-register on container restart (when data is persisted)
+if [ ! -f .credentials ]; then
+  ./config.sh --unattended --replace --url "${RUNNER_URL}" --token "${RUNNER_TOKEN}"
+fi
 
-unset GH_TOKEN
-exec "./run.sh" "${RUNNER_ARGS}"
+unset RUNNER_TOKEN
+./run.sh "${RUNNER_ARGS}" || rs=$?
+
+## Currently run.sh doesn't respect runner update (fails immidiately without waiting)
+# In this state Return code 3 indicates that the runner update has taken place
+# Lookup the latest update log and wait for the succeed log to appear
+update_log=$(ls -1t ./_diag/SelfUpdate* | head -1)
+
+if [ $rs -eq 3 ] && [ -n "$update_log" ]; then
+  timeout=20
+  st=$(date +%s)
+  until [ -f "${update_log}.succeed" ]; do
+    [[ $((`date +%s` - $st)) -lt $timeout ]] || exit $rs
+    sleep 1
+  done
+else
+  exit $rs
+fi
