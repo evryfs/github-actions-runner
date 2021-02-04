@@ -32,17 +32,19 @@ jobs:
       -
         uses: docker/login-action@v1
         with:
-          username: services1dysnix
+          username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: env
         run: |
-          ## Version provided by tag
-          [[ -z "${{ steps.image.outputs.version }}" ]] || \
-            echo "BUILD_ARGS='RUNNER_VERSION=${{ steps.image.outputs.version }}'" >> ${GITHUB_ENV}
+          if [[ -n "${{ steps.image.outputs.version }}" ]]; then
+            ## Version provided by tag (i.e. it's a semver)
+            #  strip -rXyz suffix
+            stripped="${{ steps.image.outputs.version }}"; stripped="${stripped%-r*}"
+            echo "BUILD_ARGS=RUNNER_VERSION=${stripped}" >> ${GITHUB_ENV}
+          fi
 
-      ## Rebuilding previous runners (older tags) is not required,
-      ## thus we always push the latest runner only
+      ## We use RUNNER_VERSION defined by the tag (if a valid semver is given)
       -
         name: Build and push
         uses: docker/build-push-action@v2

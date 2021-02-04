@@ -1,6 +1,6 @@
 FROM quay.io/evryfs/base-ubuntu:focal-20210119
 
-ARG RUNNER_VERSION=2.275.1
+ARG RUNNER_VERSION=2.276.1
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG UBUNTU_VERSION=2004
@@ -26,7 +26,7 @@ RUN apt-get update && \
 # Update git.
 RUN add-apt-repository -y ppa:git-core/ppa && \
     apt-get update && \
-    apt-get -y install --no-install-recommends git=1:2.29.* && \
+    apt-get -y install --no-install-recommends git=1:2.30.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -56,7 +56,7 @@ RUN useradd -mr -d /home/runner runner && \
 RUN apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY entrypoint.sh remove_runner.sh /
+COPY entrypoint.sh /
 WORKDIR /home/runner
 USER runner
 ENTRYPOINT ["/entrypoint.sh"]

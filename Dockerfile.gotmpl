@@ -6,7 +6,7 @@
 
 FROM quay.io/evryfs/base-ubuntu:focal-20210119
 
-{{ $onbuild }}ARG RUNNER_VERSION=2.276.0
+{{ $onbuild }}ARG RUNNER_VERSION=2.276.1
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG UBUNTU_VERSION=2004
@@ -19,19 +19,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Install base packages.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    sudo=1.8.* \
-    lsb-release=11.1.* \
-    software-properties-common=0.98.* \
-    gnupg-agent=2.2.* \
-    openssh-client=1:8.* \
-    make=4.*\
-    jq=1.* && \
-    apt-get -y clean && \
-    rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Install base packages.
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+    tini \
     sudo=1.8.* \
     lsb-release=11.1.* \
     software-properties-common=0.98.* \
@@ -58,8 +46,7 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
 
 # Copy scripts.
 COPY scripts/install-from-virtual-env /usr/local/bin/install-from-virtual-env
-COPY entrypoint.sh remove_runner.sh /
-
+COPY entrypoint.sh /
 
 # Install base packages from the virtual environment.
 {{ $onbuild }}ARG VIRTUAL_ENV_INSTALLS="{{ $opts.installs }}"
@@ -79,4 +66,4 @@ COPY entrypoint.sh remove_runner.sh /
     /home/runner/bin/installdependencies.sh
 
 {{ $onbuild }}WORKDIR /home/runner
-{{ $onbuild }}ENTRYPOINT ["/usr/sbin/gosu", "runner", "/entrypoint.sh"]
+{{ $onbuild }}ENTRYPOINT ["/usr/bin/tini", "--", "/usr/sbin/gosu", "runner", "/entrypoint.sh"]
