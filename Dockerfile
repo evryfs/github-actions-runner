@@ -42,6 +42,7 @@ COPY scripts/install-from-virtual-env /usr/local/bin/install-from-virtual-env
 
 # Install base packages from the virtual environment.
 RUN install-from-virtual-env powershellcore
+RUN pwsh /imagegeneration/installers/Install-PowerShellModules.ps1
 RUN install-from-virtual-env basic
 RUN install-from-virtual-env python
 RUN install-from-virtual-env aws
