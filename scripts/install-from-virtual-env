@@ -13,6 +13,9 @@ if [ ! -d /virtual-environments ]; then
     git clone --branch "${VIRTUAL_ENVIRONMENT_VERSION}" --single-branch https://github.com/actions/virtual-environments "${CHECKOUT_PATH}"
 fi
 
+chmod a+x ${HELPER_SCRIPTS}/*sh
+export PATH=${PATH}:${HELPER_SCRIPTS}
+
 if [ ! -L /imagegeneration ]; then
     ln -s "${CHECKOUT_PATH}"/images/linux/scripts imagegeneration
 fi
