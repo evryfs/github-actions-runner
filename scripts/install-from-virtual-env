@@ -20,6 +20,10 @@ if [ ! -L /imagegeneration ]; then
     ln -s "${CHECKOUT_PATH}"/images/linux/scripts imagegeneration
 fi
 
+if [ ! -L /usr/local/bin/invoke_tests ]; then
+    ln -s $HELPER_SCRIPTS/invoke-tests.sh /usr/local/bin/invoke_tests
+fi
+
 if [ ! -f /etc/apt/trusted.gpg.d/microsoft.gpg ]; then
     chmod +x "${CHECKOUT_PATH}"/images/linux/scripts/base/repos.sh
     "${CHECKOUT_PATH}"/images/linux/scripts/base/repos.sh
