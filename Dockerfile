@@ -41,6 +41,7 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
 COPY scripts/install-from-virtual-env /usr/local/bin/install-from-virtual-env
 
 # Install base packages from the virtual environment.
+RUN install-from-virtual-env powershellcore
 RUN install-from-virtual-env basic
 RUN install-from-virtual-env python
 RUN install-from-virtual-env aws
