@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-readonly _GH_API_ENDPOINT="${GH_API_ENDPOINT:-https://api.github.com}"
+readonly _GH_API_ENDPOINT="${GH_API_ENDPOINT:-https://github.com}"
 
 if [ -z "$RUNNER_TOKEN" ]
 then
