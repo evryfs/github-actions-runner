@@ -45,14 +45,16 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Copy scripts.
-COPY scripts/install-from-virtual-env /usr/local/bin/install-from-virtual-env
+COPY  scripts/install-from-virtual-env scripts/install-from-virtual-env-helpers \
+      /usr/local/bin/
 COPY entrypoint.sh /
 
 # Install base packages from the virtual environment.
 ONBUILD ARG VIRTUAL_ENV_INSTALLS="basic python nodejs"
 ONBUILD RUN apt-get -y update && \
+    . /usr/local/bin/install-from-virtual-env-helpers && \
     for package in ${VIRTUAL_ENV_INSTALLS}; do \
-        install-from-virtual-env $package; \
+        install-from-virtual-env $package;  \
     done && \
     # add gosu \
     apt-get -y install gosu && \
