@@ -44,6 +44,7 @@ COPY scripts/install-from-virtual-env /usr/local/bin/install-from-virtual-env
 RUN install-from-virtual-env basic
 RUN install-from-virtual-env python
 RUN install-from-virtual-env aws
+RUN install-from-virtual-env azure-cli
 RUN install-from-virtual-env docker-compose
 RUN install-from-virtual-env nodejs
 
