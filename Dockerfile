@@ -1,4 +1,4 @@
-FROM quay.io/evryfs/base-ubuntu:focal-20210119
+FROM quay.io/evryfs/base-ubuntu:focal-20210325
 
 ARG RUNNER_VERSION=2.277.1
 
@@ -26,7 +26,7 @@ RUN apt-get update && \
 # Update git.
 RUN add-apt-repository -y ppa:git-core/ppa && \
     apt-get update && \
-    apt-get -y install --no-install-recommends git=1:2.30.* && \
+    apt-get -y install --no-install-recommends git=1:2.31.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -44,6 +44,7 @@ COPY scripts/install-from-virtual-env /usr/local/bin/install-from-virtual-env
 RUN install-from-virtual-env basic
 RUN install-from-virtual-env python
 RUN install-from-virtual-env aws
+RUN install-from-virtual-env azure-cli
 RUN install-from-virtual-env docker-compose
 RUN install-from-virtual-env nodejs
 
