@@ -4,7 +4,7 @@
 # 
 # 
 
-FROM quay.io/evryfs/base-ubuntu:focal-20210119
+FROM quay.io/evryfs/base-ubuntu:focal-20210325
 
 ONBUILD ARG RUNNER_VERSION=2.277.1
 
@@ -63,7 +63,7 @@ ONBUILD RUN apt-get -y update && \
 
 
 # Install runner and its dependencies.
-ONBUILD RUN useradd -u 1001 -mr -d /home/runner runner && \
+ONBUILD RUN useradd -u 1001 -Um -d /home/runner runner && \
     curl -sL "https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz" | sudo -u runner tar xzvC /home/runner && \
     /home/runner/bin/installdependencies.sh
 
