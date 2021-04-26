@@ -1,6 +1,6 @@
-FROM quay.io/evryfs/base-ubuntu:focal-20210325
+FROM quay.io/evryfs/base-ubuntu:focal-20210401
 
-ARG RUNNER_VERSION=2.277.1
+ARG RUNNER_VERSION=2.278.0
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG UBUNTU_VERSION=2004
@@ -52,6 +52,9 @@ RUN install-from-virtual-env nodejs
 RUN useradd -mr -d /home/runner runner && \
     curl -sL "https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz" | tar xzvC /home/runner && \
     /home/runner/bin/installdependencies.sh
+
+# Add sudo rule for runner user
+RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
 
 # Clean apt cache.
 RUN apt-get -y clean && \
