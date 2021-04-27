@@ -18,7 +18,6 @@ RUN apt-get update && \
     software-properties-common=0.98.* \
     gnupg-agent=2.2.* \
     openssh-client=1:8.* \
-    gosu=1.10.* \
     make=4.*\
     jq=1.* && \
     apt-get -y clean && \
@@ -50,6 +49,8 @@ RUN apt-get -y update && \
     for package in ${VIRTUAL_ENV_INSTALLS}; do \
         install-from-virtual-env $package;  \
     done && \
+    # add gosu \
+    apt-get -y install --no-install-recommends gosu=1.10.* && \
     apt-get -y clean && \
     rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
