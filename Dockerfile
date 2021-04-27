@@ -50,7 +50,7 @@ RUN apt-get -y update && \
         install-from-virtual-env $package;  \
     done && \
     # add gosu \
-    apt-get -y install gosu && \
+    apt-get -y install gosu=1.10.* && \
     apt-get -y clean && \
     rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
