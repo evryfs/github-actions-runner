@@ -4,7 +4,7 @@ ARG RUNNER_VERSION=2.278.0
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG UBUNTU_VERSION=2004
-ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20201210.0
+ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20210425.1
 
 ENV UBUNTU_VERSION=${UBUNTU_VERSION} VIRTUAL_ENVIRONMENT_VERSION=${VIRTUAL_ENVIRONMENT_VERSION}
 
@@ -38,15 +38,21 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Copy scripts.
-COPY scripts/install-from-virtual-env /usr/local/bin/install-from-virtual-env
+COPY scripts/ /usr/local/bin/
 
-# Install base packages from the virtual environment.
-RUN install-from-virtual-env basic
-RUN install-from-virtual-env python
-RUN install-from-virtual-env aws
-RUN install-from-virtual-env azure-cli
-RUN install-from-virtual-env docker-compose
-RUN install-from-virtual-env nodejs
+# Install additional distro packages and runner virtual envs
+ARG VIRTUAL_ENV_PACKAGES=""
+ARG VIRTUAL_ENV_INSTALLS="basic python aws azure-cli docker-compose nodejs"
+RUN apt-get -y update && \
+    ( [ -z "$VIRTUAL_ENV_PACKAGES" ] || apt-get -y install $VIRTUAL_ENV_PACKAGES ) && \
+    . /usr/local/bin/install-from-virtual-env-helpers && \
+    for package in ${VIRTUAL_ENV_INSTALLS}; do \
+        install-from-virtual-env $package;  \
+    done && \
+    # add gosu \
+    apt-get -y install gosu && \
+    apt-get -y clean && \
+    rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install runner and its dependencies.
 RUN useradd -mr -d /home/runner runner && \
