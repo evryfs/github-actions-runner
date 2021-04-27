@@ -33,7 +33,7 @@ RUN add-apt-repository -y ppa:git-core/ppa && \
 # Install docker cli.
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
-    apt-get install -y --no-install-recommends docker-ce-cli=5:19.03.* && \
+    apt-get install -y --no-install-recommends docker-ce-cli=5:20.10.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
