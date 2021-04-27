@@ -49,7 +49,7 @@ RUN apt-get -y update && \
     for package in ${VIRTUAL_ENV_INSTALLS}; do \
         install-from-virtual-env $package;  \
     done && \
-    apt-get -y install --no-install-recommends gosu=1.10.* && \
+    apt-get -y install --no-install-recommends gosu=1.* && \
     apt-get -y clean && \
     rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
