@@ -57,14 +57,12 @@ RUN apt-get -y update && \
 # Install runner and its dependencies.
 RUN useradd -mr -d /home/runner runner && \
     curl -sL "https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz" | tar xzvC /home/runner && \
-    /home/runner/bin/installdependencies.sh
+    /home/runner/bin/installdependencies.sh && \
+    apt-get -y clean && \
+    rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Add sudo rule for runner user
 RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
-
-# Clean apt cache.
-RUN apt-get -y clean && \
-    rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY entrypoint.sh /
 WORKDIR /home/runner
