@@ -44,13 +44,13 @@ COPY scripts/ /usr/local/bin/
 ARG VIRTUAL_ENV_PACKAGES=""
 ARG VIRTUAL_ENV_INSTALLS="basic python aws azure-cli docker-compose nodejs"
 RUN apt-get -y update && \
-    ( [ -z "$VIRTUAL_ENV_PACKAGES" ] || apt-get -y install $VIRTUAL_ENV_PACKAGES ) && \
+    ( [ -z "$VIRTUAL_ENV_PACKAGES" ] || apt-get -y --no-install-recommends install $VIRTUAL_ENV_PACKAGES ) && \
     . /usr/local/bin/install-from-virtual-env-helpers && \
     for package in ${VIRTUAL_ENV_INSTALLS}; do \
         install-from-virtual-env $package;  \
     done && \
     # add gosu \
-    apt-get -y install gosu=1.10.* && \
+    apt-get -y install --no-install-recommends gosu=1.10.* && \
     apt-get -y clean && \
     rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
