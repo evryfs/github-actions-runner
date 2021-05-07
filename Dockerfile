@@ -19,6 +19,7 @@ RUN apt-get update && \
     gnupg-agent=2.2.* \
     openssh-client=1:8.* \
     make=4.*\
+    rsync \
     jq=1.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
