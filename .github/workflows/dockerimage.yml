@@ -47,7 +47,7 @@ jobs:
       ## We use RUNNER_VERSION defined by the tag (if a valid semver is given)
       -
         name: Build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v2.4.0
         with:
           context: .
           file: ./Dockerfile.${{ matrix.df }}
