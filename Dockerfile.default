@@ -4,7 +4,7 @@
 # 
 # 
 
-FROM quay.io/evryfs/base-ubuntu:focal-20210401
+FROM quay.io/evryfs/base-ubuntu:focal-20210416
 
 ARG RUNNER_VERSION=2.278.0
 
@@ -26,6 +26,7 @@ RUN apt-get update && \
     gnupg-agent=2.2.* \
     openssh-client=1:8.* \
     make=4.*\
+    rsync \
     jq=1.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -40,7 +41,7 @@ RUN add-apt-repository -y ppa:git-core/ppa && \
 # Install docker cli.
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
-    apt-get install -y --no-install-recommends docker-ce-cli=5:19.03.* && \
+    apt-get install -y --no-install-recommends docker-ce-cli=5:20.10.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -50,12 +51,12 @@ COPY  scripts/install-from-virtual-env scripts/install-from-virtual-env-helpers 
 COPY entrypoint.sh /
 
 # Install additional distro packages and runner virtual envs
-ARG VIRTUAL_ENV_PACKAGES=""
-ARG VIRTUAL_ENV_INSTALLS="basic python nodejs"
+ARG VIRTUAL_ENV_PACKAGES
+ARG VIRTUAL_ENV_INSTALLS
 RUN apt-get -y update && \
     ( [ -z "$VIRTUAL_ENV_PACKAGES" ] || apt-get -y install $VIRTUAL_ENV_PACKAGES ) && \
     . /usr/local/bin/install-from-virtual-env-helpers && \
-    for package in ${VIRTUAL_ENV_INSTALLS}; do \
+    for package in ${VIRTUAL_ENV_INSTALLS:-basic python nodejs}; do \
         install-from-virtual-env $package;  \
     done && \
     # add gosu \
