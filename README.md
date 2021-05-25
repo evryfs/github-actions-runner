@@ -14,7 +14,7 @@ So this image will allow you to use the [installers](https://github.com/actions/
 But since the original project has been designed to be executed on real VM instead of Docker containers, some scripts can fail,
 like the ones who try to install `snap` packages (since `snap` can't run on Docker).
 
-Here you can find the [list of available installers](https://github.com/actions/virtual-environments/tree/main/images/linux/scripts/installer).
+Here you can find the [list of available installers](https://github.com/actions/virtual-environments/tree/main/images/linux/scripts/installers).
 
 ## Configurations
 
