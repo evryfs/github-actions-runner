@@ -27,7 +27,7 @@ RUN apt-get update && \
 # Update git.
 RUN add-apt-repository -y ppa:git-core/ppa && \
     apt-get update && \
-    apt-get -y install --no-install-recommends git=1:2.31.* && \
+    apt-get -y install --no-install-recommends git=1:2.32.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
