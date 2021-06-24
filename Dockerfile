@@ -20,6 +20,7 @@ RUN apt-get update && \
     openssh-client=1:8.* \
     make=4.*\
     rsync \
+    wget \
     jq=1.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
