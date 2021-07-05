@@ -1,8 +1,0 @@
-default:
-  installs: "basic python nodejs"
-
-onbuild:
-  installs: "basic python nodejs"
-
-gcloud:
-  installs: "basic python nodejs google-cloud-sdk"

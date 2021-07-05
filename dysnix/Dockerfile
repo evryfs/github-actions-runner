@@ -40,32 +40,52 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Copy scripts.
-COPY scripts/ /usr/local/bin/
+COPY  scripts/install-from-virtual-env scripts/install-from-virtual-env-helpers \
+      /usr/local/bin/
+COPY entrypoint.sh /
 
-# Install additional distro packages and runner virtual envs
+# Install the default virtual environments and packages
 ARG VIRTUAL_ENV_PACKAGES=""
-ARG VIRTUAL_ENV_INSTALLS="basic python aws azure-cli docker-compose nodejs"
-RUN apt-get -y update && \
-    ( [ -z "$VIRTUAL_ENV_PACKAGES" ] || apt-get -y --no-install-recommends install $VIRTUAL_ENV_PACKAGES ) && \
+ARG VIRTUAL_ENV_INSTALLS="basic python nodejs"
+RUN \
     . /usr/local/bin/install-from-virtual-env-helpers && \
-    for package in ${VIRTUAL_ENV_INSTALLS}; do \
-        install-from-virtual-env $package;  \
-    done && \
-    apt-get -y install --no-install-recommends gosu=1.* && \
-    apt-get -y clean && \
-    rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    ( [ -z "$VIRTUAL_ENV_PACKAGES" ] || apt-get -y update && apt-get -y --no-install-recommends install $VIRTUAL_ENV_PACKAGES ) && \
+    ( \
+      [ -z "$VIRTUAL_ENV_INSTALLS" ] || \
+        for package in ${VIRTUAL_ENV_INSTALLS}; do \
+            install-from-virtual-env $package;  \
+        done && \
+      apt-get -y clean && \
+      rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    )
 
 # Install runner and its dependencies.
-RUN useradd -mr -d /home/runner runner && \
-    curl -sL "https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz" | tar xzvC /home/runner && \
+RUN useradd -u 1001 -Um -d /home/runner runner && \
+    curl -sL "https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz" | sudo -u runner tar xzvC /home/runner && \
     /home/runner/bin/installdependencies.sh && \
+    # make the runner user a passwordless sudoer \
+    echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner && chmod 440 /etc/sudoers.d/runner && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Add sudo rule for runner user
-RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
-
-COPY entrypoint.sh /
 WORKDIR /home/runner
 USER runner
 ENTRYPOINT ["/entrypoint.sh"]
+
+# Onbuild packages and additional virtual environments installation
+ONBUILD USER root
+ONBUILD ARG VIRTUAL_ENV_PACKAGES=""
+ONBUILD ARG VIRTUAL_ENV_INSTALLS=""
+ONBUILD RUN \
+    . /usr/local/bin/install-from-virtual-env-helpers && \
+    ( [ -z "$VIRTUAL_ENV_PACKAGES" ] || apt-get -y update && apt-get -y --no-install-recommends install $VIRTUAL_ENV_PACKAGES ) && \
+    ( \
+      [ -z "$VIRTUAL_ENV_INSTALLS" ] || \
+        for package in ${VIRTUAL_ENV_INSTALLS}; do \
+            install-from-virtual-env $package;  \
+        done && \
+      apt-get -y clean && \
+      rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    )
+
+ONBUILD USER runner
