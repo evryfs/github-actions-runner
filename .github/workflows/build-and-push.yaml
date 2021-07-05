@@ -57,16 +57,17 @@ jobs:
         id: set
         with:
           script: |
-            // Process latest default or latest flavor
             if ( '${{ steps.findLatest.outputs.older }}' === 'false' ) {
+              // Specify latest or flavor
               core.setOutput('latestFlavor',
                 '${{ matrix.flavor }}' !== 'default' ? '${{ matrix.flavor }}' : 'latest'
               );
 
-              // Strip release id -r\d+ (v2.278.0-r4 => v2.278.0)
-              const match = context.ref.match(/^refs\/tags\/(.*)-r\d+$/);
+              // Split tag into semver and release id v1.2.3-r1 => v1.2.3 and -r1
+              const match = context.ref.match(/^refs\/tags\/(.*)(-r\d+)$/);
               if (match) {
-                core.setOutput('strippedRVer', match[1]);
+                core.setOutput('semver', match[1]);
+                core.setOutput('rid', match[2])
               }
             }
       -
@@ -76,10 +77,11 @@ jobs:
         with:
           images: ${{ needs.pre.outputs.image }}
           flavor: |
+            latest=false
             suffix=${{ matrix.suffix }}
           tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{version}},value=${{ steps.set.outputs.strippedRVer }},enable=${{ steps.set.outputs.strippedRVer != '' }}
+            type=semver,pattern=v{{version}},value=${{ steps.set.outputs.semver }}
+            type=semver,pattern=v{{version}},value=${{ steps.set.outputs.semver }},suffix=${{ matrix.suffix }}${{ steps.set.outputs.rid }}
             type=raw,value=${{ steps.set.outputs.latestFlavor }},suffix=
       -
         name: Set up Docker Buildx
