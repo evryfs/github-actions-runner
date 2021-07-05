@@ -68,14 +68,18 @@ RUN useradd -u 1001 -Um -d /home/runner runner && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Install additional packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gosu=1.* \
+    tini=0.* && \
+    rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 WORKDIR /home/runner
-USER runner
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/tini", "--", "/usr/sbin/gosu", "runner", "/entrypoint.sh"]
 
 # Onbuild packages and additional virtual environments installation
-ONBUILD USER root
-ONBUILD ARG VIRTUAL_ENV_PACKAGES=""
-ONBUILD ARG VIRTUAL_ENV_INSTALLS=""
+ONBUILD ARG VIRTUAL_ENV_PACKAGES
+ONBUILD ARG VIRTUAL_ENV_INSTALLS
 ONBUILD RUN \
     . /usr/local/bin/install-from-virtual-env-helpers && \
     ( [ -z "$VIRTUAL_ENV_PACKAGES" ] || apt-get -y update && apt-get -y --no-install-recommends install $VIRTUAL_ENV_PACKAGES ) && \
@@ -87,5 +91,3 @@ ONBUILD RUN \
       apt-get -y clean && \
       rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     )
-
-ONBUILD USER runner
