@@ -62,13 +62,6 @@ jobs:
               core.setOutput('latestFlavor',
                 '${{ matrix.flavor }}' !== 'default' ? '${{ matrix.flavor }}' : 'latest'
               );
-
-              // Split tag into semver and release id v1.2.3-r1 => v1.2.3 and -r1
-              const match = context.ref.match(/^refs\/tags\/(.*)(-r\d+)$/);
-              if (match) {
-                core.setOutput('semver', match[1]);
-                core.setOutput('rid', match[2])
-              }
             }
       -
         name: Docker meta
@@ -79,9 +72,8 @@ jobs:
           flavor: |
             latest=false
             suffix=${{ matrix.suffix }}
+          ## Note: we don't tag any semver, since for github actions runner it's unnecessary (latest is required)
           tags: |
-            type=semver,pattern=v{{version}},value=${{ steps.set.outputs.semver }}
-            type=semver,pattern=v{{version}},value=${{ steps.set.outputs.semver }},suffix=${{ matrix.suffix }}${{ steps.set.outputs.rid }}
             type=raw,value=${{ steps.set.outputs.latestFlavor }},suffix=
       -
         name: Set up Docker Buildx

@@ -1,4 +1,4 @@
-[![Docker Repository on Quay](https://quay.io/repository/evryfs/github-actions-runner/status "Docker Repository on Quay")](https://quay.io/repository/evryfs/github-actions-runner)
+[![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/dysnix/github-actions-runner?label=version&sort=semver)](https://hub.docker.com/r/dysnix/github-actions-runner)
 
 # github-actions-runner
 
