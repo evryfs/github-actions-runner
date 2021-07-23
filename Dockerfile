@@ -1,6 +1,6 @@
 FROM quay.io/evryfs/base-ubuntu:focal-20210713
 
-ARG RUNNER_VERSION=2.278.0
+ARG RUNNER_VERSION=2.279.0
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG UBUNTU_VERSION=2004
