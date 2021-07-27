@@ -25,6 +25,9 @@ RUN apt-get update && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Add sudo rule for runner user
+RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
+
 # Update git.
 RUN add-apt-repository -y ppa:git-core/ppa && \
     apt-get update && \
@@ -61,9 +64,6 @@ RUN useradd -mr -d /home/runner runner && \
     /home/runner/bin/installdependencies.sh && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Add sudo rule for runner user
-RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
 
 COPY entrypoint.sh /
 WORKDIR /home/runner
