@@ -1,7 +1,5 @@
 FROM quay.io/evryfs/base-ubuntu:focal-20210723
 
-ARG RUNNER_VERSION=2.280.3
-
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG UBUNTU_VERSION=2004
 ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20210816.1
@@ -61,10 +59,7 @@ RUN apt-get -y update && \
 
 # Install runner and its dependencies.
 RUN useradd -mr -d /home/runner runner && \
-    curl -sL "https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz" | tar xzvC /home/runner && \
-    /home/runner/bin/installdependencies.sh && \
-    apt-get -y clean && \
-    rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    install-runner
 
 COPY entrypoint.sh /
 WORKDIR /home/runner
