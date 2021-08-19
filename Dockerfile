@@ -1,10 +1,10 @@
 FROM quay.io/evryfs/base-ubuntu:focal-20210723
 
-ARG RUNNER_VERSION=2.280.2
+ARG RUNNER_VERSION=2.280.3
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG UBUNTU_VERSION=2004
-ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20210810.1
+ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20210816.1
 
 ENV UBUNTU_VERSION=${UBUNTU_VERSION} VIRTUAL_ENVIRONMENT_VERSION=${VIRTUAL_ENVIRONMENT_VERSION}
 
@@ -28,7 +28,7 @@ RUN apt-get update && \
 # Update git.
 RUN add-apt-repository -y ppa:git-core/ppa && \
     apt-get update && \
-    apt-get -y install --no-install-recommends git=1:2.32.* && \
+    apt-get -y install --no-install-recommends git=1:2.33.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
