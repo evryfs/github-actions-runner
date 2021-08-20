@@ -17,9 +17,13 @@ if [ -e /etc/image_runner_version ]; then
 fi
 
 echo "Installing latest version ($latest_runner_version)"
-curl -sL "https://github.com/actions/runner/releases/download/v${latest_runner_version}/actions-runner-linux-x64-${latest_runner_version}.tar.gz" | tar xzvC /home/runner && \
-    /home/runner/bin/installdependencies.sh && \
-    apt-get -y clean && \
-    rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+curl -sL "https://github.com/actions/runner/releases/download/v${latest_runner_version}/actions-runner-linux-x64-${latest_runner_version}.tar.gz" | tar xzvC /home/runner
+
+if [ -n "$ALWAYS_INSTALL_DEPENDENCIES" ] || [ ! -e /etc/image_runner_dependencies_installed ]; then
+  /home/runner/bin/installdependencies.sh
+  apt-get -y clean
+  rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  touch /etc/image_runner_dependencies_installed
+fi
 
 echo $latest_runner_version > /etc/image_runner_version
