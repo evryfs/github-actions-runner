@@ -1,7 +1,12 @@
 #!/bin/bash
 set -e
 
-latest_runner_version=$(curl -I -v -s https://github.com/actions/runner/releases/latest 2>&1 | perl -ne 'next unless s/^< location: //; s{.*/v}{}; s/\s+//; print')
+latest_runner_version=$(curl -I -s \
+    --retry-max-time ${RETRY_MAX_TIME:-60} \
+    --retry ${RETRIES:-3} \
+    --retry-connrefused \
+    https://github.com/actions/runner/releases/latest 2>&1 |
+  perl -ne 'next unless s/^location: //; s{.*/v}{}; s/\s+//; print')
 
 if [ -e /etc/image_runner_version ]; then
   image_runner_version=$(cat /etc/image_runner_version)
