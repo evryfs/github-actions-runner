@@ -16,5 +16,7 @@ else
   readonly RUNNER_URL="${_GH_API_ENDPOINT}/${GH_ORG}/${GH_REPO}"
 fi
 
+sudo install-runner
+
 ./config.sh --unattended --replace --url "${RUNNER_URL}" --token "${RUNNER_TOKEN}"
 exec "./run.sh" "${RUNNER_ARGS}"
