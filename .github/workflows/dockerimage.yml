@@ -12,6 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2.3.4
     - uses: ludeeus/action-shellcheck@1.1.0
-    - uses: hadolint/hadolint-action@v1.5.0
+    - uses: hadolint/hadolint-action@v1.6.0
     - run: |
         docker build .
