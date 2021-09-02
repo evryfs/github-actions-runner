@@ -2,7 +2,7 @@ FROM quay.io/evryfs/base-ubuntu:focal-20210827
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG UBUNTU_VERSION=2004
-ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20210816.1
+ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20210831.9
 
 ENV UBUNTU_VERSION=${UBUNTU_VERSION} VIRTUAL_ENVIRONMENT_VERSION=${VIRTUAL_ENVIRONMENT_VERSION}
 
@@ -58,7 +58,7 @@ RUN apt-get -y update && \
     rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install runner and its dependencies.
-RUN useradd -mr -d /home/runner runner && \
+RUN groupadd -g 121 runner && useradd -mr -d /home/runner -u 1001 -g 121 runner && \
     install-runner
 
 COPY entrypoint.sh /
