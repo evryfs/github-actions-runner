@@ -19,7 +19,8 @@ RUN apt-get update && \
     make=4.*\
     rsync \
     wget \
-    jq=1.* && \
+    jq=1.* \
+    amazon-ecr-credential-helper=0.3.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
