@@ -19,7 +19,7 @@ if [ ! -f /etc/apt/trusted.gpg.d/microsoft.gpg ]; then
 fi
 
 # Hack, to fix the toolset.json issue
-cp "${CHECKOUT_PATH}"/images/linux/toolsets/toolset-"${UBUNTU_VERSION}".json /imagegeneration/installers/toolset.json
+mkdir -p /imagegeneration/installers/ && cp "${CHECKOUT_PATH}"/images/linux/toolsets/toolset-"${UBUNTU_VERSION}".json /imagegeneration/installers/toolset.json
 
 if [ ! -f ${INSTALLER_SCRIPT_FOLDER}/toolset.json ]; then
     cp "${CHECKOUT_PATH}"/images/linux/toolsets/toolset-"${UBUNTU_VERSION}".json "${INSTALLER_SCRIPT_FOLDER}"/toolset.json
