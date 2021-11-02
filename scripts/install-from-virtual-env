@@ -19,7 +19,7 @@ if [ ! -f /etc/apt/trusted.gpg.d/microsoft.gpg ]; then
 fi
 
 
-if [ ! -f imagegeneration/toolset.json ]; then
+if [ ! -f /imagegeneration/toolset.json ]; then
     mkdir -p /imagegeneration/installers/ && cp "${CHECKOUT_PATH}"/images/linux/toolsets/toolset-"${UBUNTU_VERSION}".json /imagegeneration/installers/toolset.json
 fi
 
