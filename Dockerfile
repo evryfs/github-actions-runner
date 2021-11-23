@@ -13,7 +13,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     sudo=1.8.* \
     lsb-release=11.1.* \
-    software-properties-common=0.98.* \
+    software-properties-common=0.99.* \
     gnupg-agent=2.2.* \
     openssh-client=1:8.* \
     make=4.*\
