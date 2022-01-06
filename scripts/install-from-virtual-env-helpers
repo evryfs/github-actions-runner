@@ -1,5 +1,0 @@
-#!/bin/bash
-set -e
-
-function invoke_tests { /bin/true; }
-export -f invoke_tests
