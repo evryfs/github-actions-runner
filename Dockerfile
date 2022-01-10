@@ -1,4 +1,4 @@
-FROM myoung34/github-runner:latest
+FROM myoung34/github-runner:2.286.0
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
