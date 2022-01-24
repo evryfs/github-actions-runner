@@ -1,4 +1,4 @@
-FROM myoung34/github-runner:2.286.0
+FROM myoung34/github-runner:2.286.1
 ENV YARN_VERSION=1.22.17
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
