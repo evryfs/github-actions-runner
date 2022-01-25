@@ -9,7 +9,7 @@ RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
 # Install libs required for cyress: https://docs.cypress.io/guides/getting-started/installing-cypress#System-requirements
 RUN \
     apt-get update && \
-    apt-get -y install --no-install-recommends libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+    apt-get -y install --no-install-recommends libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
