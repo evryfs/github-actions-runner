@@ -1,5 +1,7 @@
 FROM myoung34/github-runner:2.286.1
-ENV YARN_VERSION=1.22.17
+ENV YARN_VERSION=1.22.17 \
+  DEBIAN_FRONTEND=noninteractive \
+  LANG=C.UTF-8
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
