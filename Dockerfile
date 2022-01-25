@@ -6,10 +6,10 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Add sudo rule for runner user
 RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
 
-# Update git to remove warnings/errors on path
-RUN add-apt-repository -y ppa:git-core/ppa && \
+# Install libs required for cyress: https://docs.cypress.io/guides/getting-started/installing-cypress#System-requirements
+RUN \
     apt-get update && \
-    apt-get -y install --no-install-recommends git=1:2.34.* && \
+    apt-get -y install --no-install-recommends libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
