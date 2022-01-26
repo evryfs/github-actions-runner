@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - master
+    - test-NewImage
     tags:
     - '*'
   pull_request:
