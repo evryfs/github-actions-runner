@@ -1,17 +1,40 @@
-name: Docker Image CI
+name: build
 on:
   push:
     branches:
     - master
+    tags:
+    - '*'
   pull_request:
-
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'skip ci')"
     steps:
-    - uses: actions/checkout@v2.4.0
+    - name: Checkout
+      uses: actions/checkout@v2
     - uses: ludeeus/action-shellcheck@1.1.0
     - uses: hadolint/hadolint-action@v1.6.0
-    - run: |
-        docker build .
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v3
+      with:
+        # list of Docker images to use as base name for tags
+        images: |
+          quay.io/evryfs/github-actions-runner
+        # generate Docker tags based on the following events/attributes
+        tags: |
+          type=ref,event=branch
+    - name: Login to quay.io
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v1
+      with:
+        registry: quay.io
+        username: ${{ secrets.QUAY_USERNAME }}
+        password: ${{ secrets.QUAY_PASSWORD }}
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
