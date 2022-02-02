@@ -1,4 +1,4 @@
-FROM quay.io/evryfs/base-ubuntu:focal-20220105
+FROM quay.io/evryfs/base-ubuntu:focal-20220113
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG UBUNTU_VERSION=2004
