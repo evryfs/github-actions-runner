@@ -2,7 +2,7 @@ FROM quay.io/evryfs/base-ubuntu:focal-20220404
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG UBUNTU_VERSION=2004
-ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20220330.0
+ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20220405.4
 
 ENV UBUNTU_VERSION=${UBUNTU_VERSION} VIRTUAL_ENVIRONMENT_VERSION=${VIRTUAL_ENVIRONMENT_VERSION}
 
