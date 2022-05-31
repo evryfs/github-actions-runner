@@ -1,0 +1,41 @@
+name: build
+on:
+  push:
+    branches:
+    - master
+    - myoung34-derivate
+    tags:
+    - '*'
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - uses: ludeeus/action-shellcheck@1.1.0
+    - uses: hadolint/hadolint-action@v2.1.0
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        # list of Docker images to use as base name for tags
+        images: |
+          quay.io/evryfs/github-actions-runner
+        # generate Docker tags based on the following events/attributes
+        tags: |
+          type=ref,event=branch
+    - name: Login to quay.io
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v2
+      with:
+        registry: quay.io
+        username: ${{ secrets.QUAY_USERNAME }}
+        password: ${{ secrets.QUAY_PASSWORD }}
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}

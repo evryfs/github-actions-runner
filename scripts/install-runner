@@ -1,7 +1,12 @@
 #!/bin/bash
 set -e
 
-latest_runner_version=$(curl -I -v -s https://github.com/actions/runner/releases/latest 2>&1 | perl -ne 'next unless s/^< location: //; s{.*/v}{}; s/\s+//; print')
+latest_runner_version=$(curl -I -s \
+    --retry-max-time ${RETRY_MAX_TIME:-60} \
+    --retry ${RETRIES:-3} \
+    --retry-connrefused \
+    https://github.com/actions/runner/releases/latest 2>&1 |
+  perl -ne 'next unless s/^location: //; s{.*/v}{}; s/\s+//; print')
 
 if [ -e /etc/image_runner_version ]; then
   image_runner_version=$(cat /etc/image_runner_version)
@@ -12,9 +17,13 @@ if [ -e /etc/image_runner_version ]; then
 fi
 
 echo "Installing latest version ($latest_runner_version)"
-curl -sL "https://github.com/actions/runner/releases/download/v${latest_runner_version}/actions-runner-linux-x64-${latest_runner_version}.tar.gz" | tar xzvC /home/runner && \
-    /home/runner/bin/installdependencies.sh && \
-    apt-get -y clean && \
-    rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+curl -sL "https://github.com/actions/runner/releases/download/v${latest_runner_version}/actions-runner-linux-x64-${latest_runner_version}.tar.gz" | tar xzvC /home/runner
+
+if [ -n "$ALWAYS_INSTALL_DEPENDENCIES" ] || [ ! -e /etc/image_runner_dependencies_installed ]; then
+  /home/runner/bin/installdependencies.sh
+  apt-get -y clean
+  rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  touch /etc/image_runner_dependencies_installed
+fi
 
 echo $latest_runner_version > /etc/image_runner_version

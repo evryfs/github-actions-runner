@@ -1,10 +1,8 @@
-FROM quay.io/evryfs/base-ubuntu:focal-20210723
-
-ARG RUNNER_VERSION=2.280.1
+FROM quay.io/evryfs/base-ubuntu:focal-20220404
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG UBUNTU_VERSION=2004
-ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20210726.1
+ARG VIRTUAL_ENVIRONMENT_VERSION=ubuntu20/20220515.1
 
 ENV UBUNTU_VERSION=${UBUNTU_VERSION} VIRTUAL_ENVIRONMENT_VERSION=${VIRTUAL_ENVIRONMENT_VERSION}
 
@@ -15,13 +13,14 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     sudo=1.8.* \
     lsb-release=11.1.* \
-    software-properties-common=0.98.* \
+    software-properties-common=0.99.* \
     gnupg-agent=2.2.* \
     openssh-client=1:8.* \
     make=4.*\
     rsync \
     wget \
-    jq=1.* && \
+    jq=1.* \
+    amazon-ecr-credential-helper=0.3.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Install kubectl
@@ -32,10 +31,13 @@ RUN curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -
 # Add sudo rule for runner user
 RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
 
+# Add sudo rule for runner user
+RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
+
 # Update git.
 RUN add-apt-repository -y ppa:git-core/ppa && \
     apt-get update && \
-    apt-get -y install --no-install-recommends git=1:2.32.* && \
+    apt-get -y install --no-install-recommends git=1:2.36.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -64,7 +66,7 @@ RUN apt-get -y update && \
     rm -rf /virtual-environments /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install runner and its dependencies.
-RUN useradd -mr -d /home/runner runner && \
+RUN groupadd -g 121 runner && useradd -mr -d /home/runner -u 1001 -g 121 runner && \
     install-runner
 
 COPY entrypoint.sh /
