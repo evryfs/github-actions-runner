@@ -17,7 +17,19 @@ if [ -e /etc/image_runner_version ]; then
 fi
 
 echo "Installing latest version ($latest_runner_version)"
-curl -sL "https://github.com/actions/runner/releases/download/v${latest_runner_version}/actions-runner-linux-x64-${latest_runner_version}.tar.gz" | tar xzvC /home/runner
+
+_arch=""
+case $(dpkg --print-architecture) in
+  "amd64")
+    _arch=x64
+  ;;
+
+  "arm64")
+    _arch=arm64
+  ;;
+esac
+
+curl -sL "https://github.com/actions/runner/releases/download/v${latest_runner_version}/actions-runner-linux-${_arch}-${latest_runner_version}.tar.gz" | tar xzvC /home/runner
 
 if [ -n "$ALWAYS_INSTALL_DEPENDENCIES" ] || [ ! -e /etc/image_runner_dependencies_installed ]; then
   /home/runner/bin/installdependencies.sh
