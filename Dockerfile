@@ -30,7 +30,7 @@ RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
 # Update git.
 RUN add-apt-repository -y ppa:git-core/ppa && \
     apt-get update && \
-    apt-get -y install --no-install-recommends git=1:2.36.* && \
+    apt-get -y install --no-install-recommends git=1:2.37.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
