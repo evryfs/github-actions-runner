@@ -1,0 +1,4 @@
+# Sealed secrets
+.*-sealed\.json$
+.*-sealed\.yml$
+.*-sealed\.yaml$

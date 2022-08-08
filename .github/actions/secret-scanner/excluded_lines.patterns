@@ -1,0 +1,5 @@
+# Image tags
+^.*tag.*$
+
+# Secrets we don't care about
+[\"\']?googleMapsApiKey[\"\']?: [\"\']?\w+[\"\']?
