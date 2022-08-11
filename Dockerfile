@@ -22,9 +22,5 @@ RUN \
   apt-get -y clean && \
   rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-
-# Add runner user with gid 121 and uid 1001, so it is equal to the runner images used by GitHub
-RUN groupadd -g 121 runner && useradd -mr -d /actions-runner -u 1001 -g 121 runner
-
 WORKDIR /actions-runner
 USER runner
