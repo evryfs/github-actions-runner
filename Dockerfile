@@ -2,6 +2,7 @@ FROM myoung34/github-runner:2.295.0
 ENV YARN_VERSION=1.22.18
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
+ENV RUN_AS_ROOT="false"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
