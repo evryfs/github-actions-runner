@@ -11,6 +11,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Install base packages.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    ca-certificates \
     sudo=1.8.* \
     lsb-release=11.1.* \
     software-properties-common=0.99.* \
