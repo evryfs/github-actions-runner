@@ -13,7 +13,7 @@ jobs:
     - name: Check for updates
       id: update
       run: |
-        version=$(curl --silent https://api.github.com/repos/actions/virtual-environments/releases | \
+        version=$(curl --location --silent https://api.github.com/repos/actions/virtual-environments/releases | \
           jq -r 'map(select(.tag_name|startswith("ubuntu20"))|.tag_name)[0]')
 
         echo ::set-output name=version::$version
