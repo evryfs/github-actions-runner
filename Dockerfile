@@ -12,7 +12,7 @@ RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
 # Install libs required for cyress: https://docs.cypress.io/guides/getting-started/installing-cypress#System-requirements
 RUN \
     apt-get update && \
-    apt-get -y install --no-install-recommends libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb && \
+    apt-get -y install --no-install-recommends libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb zip && \
 #Add Yarn, as there's currently no setup-yarn action available
   curl -sL https://yarnpkg.com/downloads/${YARN_VERSION}/yarn-v${YARN_VERSION}.tar.gz |tar xzvf - -C /opt && \
 	ln -sf /opt/yarn-v${YARN_VERSION}/bin/yarn /usr/local/bin/yarn && \
