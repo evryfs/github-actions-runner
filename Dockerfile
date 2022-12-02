@@ -31,9 +31,6 @@ RUN curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -
 # Add sudo rule for runner user
 RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
 
-# Add sudo rule for runner user
-RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
-
 # Update git.
 RUN add-apt-repository -y ppa:git-core/ppa && \
     apt-get update && \
