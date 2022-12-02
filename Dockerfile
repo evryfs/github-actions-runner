@@ -1,4 +1,4 @@
-FROM quay.io/evryfs/base-ubuntu:focal-20220801-1
+FROM quay.io/evryfs/base-ubuntu:focal-20221019
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG UBUNTU_VERSION=2004
@@ -11,6 +11,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Install base packages.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    ca-certificates \
     sudo=1.8.* \
     lsb-release=11.1.* \
     software-properties-common=0.99.* \
@@ -34,7 +35,7 @@ RUN echo "runner ALL= EXEC: NOPASSWD:ALL" >> /etc/sudoers.d/runner
 # Update git.
 RUN add-apt-repository -y ppa:git-core/ppa && \
     apt-get update && \
-    apt-get -y install --no-install-recommends git=1:2.37.* && \
+    apt-get -y install --no-install-recommends git=1:2.38.* && \
     apt-get -y clean && \
     rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
