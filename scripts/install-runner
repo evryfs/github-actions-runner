@@ -6,7 +6,7 @@ latest_runner_version=$(curl -I -s \
     --retry ${RETRIES:-3} \
     --retry-connrefused \
     https://github.com/actions/runner/releases/latest 2>&1 |
-  grep -Pio 'location:.*?/v\K.*' |
+  grep -Pio 'location:.*?/v\K.*?$' |
   tr -d '\r')
 
 if [ -e /etc/image_runner_version ]; then
