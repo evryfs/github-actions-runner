@@ -1,12 +1,13 @@
 #!/bin/bash
 set -e
 
-latest_runner_version=$(curl -L -s \
+latest_runner_version=$(curl -I -s \
     --retry-max-time ${RETRY_MAX_TIME:-60} \
     --retry ${RETRIES:-3} \
     --retry-connrefused \
     https://github.com/actions/runner/releases/latest 2>&1 |
-  grep -oP '<h1.*?>v\K.*?(?=</h1>)')
+  grep -Pio 'location:.*?/v\K.*' |
+  tr -d '\r')
 
 if [ -e /etc/image_runner_version ]; then
   image_runner_version=$(cat /etc/image_runner_version)
