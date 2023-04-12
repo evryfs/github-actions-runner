@@ -1,7 +1,7 @@
 [![Docker Repository on Quay](https://quay.io/repository/evryfs/github-actions-runner/status "Docker Repository on Quay")](https://quay.io/repository/evryfs/github-actions-runner)
 
 
-Note: The master tag uses the virtual-environments setup from GHA, which is not in use by this project anymore - thus that image is no longer updated - the last tag will be 20230409.1
+Note: The master tag uses the virtual-environments setup from GHA, which is not in use by this project anymore - thus that image is no longer updated (only relevant for the master tagged image)
 Use the myoung34-derivative image instead!
 
 
