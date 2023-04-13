@@ -1,5 +1,10 @@
 [![Docker Repository on Quay](https://quay.io/repository/evryfs/github-actions-runner/status "Docker Repository on Quay")](https://quay.io/repository/evryfs/github-actions-runner)
 
+
+Note: The master tag uses the virtual-environments setup from GHA, which is not in use by this project anymore - thus that image is no longer updated (only relevant for the master tagged image)
+Use the myoung34-derivate image instead, which follows the myoung34-derivate branch (https://github.com/evryfs/github-actions-runner/tree/myoung34-derivate)
+
+
 # github-actions-runner
 
 Image for containerized github [actions runner](https://github.com/actions/runner).

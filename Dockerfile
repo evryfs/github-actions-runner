@@ -1,3 +1,4 @@
+#Note: This virtualenvironments image is not being updated anymore. See the README.
 FROM quay.io/evryfs/base-ubuntu:focal-20221130
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
