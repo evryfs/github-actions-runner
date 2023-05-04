@@ -1,5 +1,5 @@
 #Note: This virtualenvironments image is not being updated anymore. See the README.
-FROM quay.io/evryfs/base-ubuntu:focal-20221130
+FROM quay.io/evryfs/base-ubuntu:focal-20230412
 
 # This the release tag of virtual-environments: https://github.com/actions/virtual-environments/releases
 ARG UBUNTU_VERSION=2004
