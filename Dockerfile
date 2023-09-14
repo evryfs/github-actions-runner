@@ -21,7 +21,7 @@ RUN \
   curl -sL "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb" -o /tmp/packages-microsoft-prod.deb && \
   dpkg -i /tmp/packages-microsoft-prod.deb && \
   rm /tmp/packages-microsoft-prod.deb && \
-  apt-get update && apt-get -y --no-install-recommends install azure-cli powershell && \
+  apt-get update && apt-get -y --no-install-recommends install azure-cli powershell strace && \
   apt-get -y clean && \
   rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
