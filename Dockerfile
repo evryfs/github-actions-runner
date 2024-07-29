@@ -1,4 +1,4 @@
-FROM myoung34/github-runner:2.317.0
+FROM myoung34/github-runner:2.318.0
 ENV YARN_VERSION=1.22.19
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
