@@ -22,7 +22,7 @@ RUN \
 #  dpkg -i /tmp/packages-microsoft-prod.deb && \
 #  rm /tmp/packages-microsoft-prod.deb && \
 #  apt-get update && apt-get -y --no-install-recommends install azure-cli powershell strace && \
-  apt-get update && apt-get -y --no-install-recommends install strace && \
+  apt-get update && apt-get -y --no-install-recommends install strace dotnet-sdk-8.0 && \
   apt-get -y clean && \
   rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
