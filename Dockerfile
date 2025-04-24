@@ -22,9 +22,34 @@ RUN \
 #  dpkg -i /tmp/packages-microsoft-prod.deb && \
 #  rm /tmp/packages-microsoft-prod.deb && \
 #  apt-get update && apt-get -y --no-install-recommends install azure-cli powershell strace && \
-  apt-get update && apt-get -y --no-install-recommends install strace fontconfig && \
+  apt-get update && apt-get -y --no-install-recommends install strace fontconfig curl gcc build-essential git wget vim && \
   apt-get -y clean && \
   rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+#FIPS
+RUN wget https://www.openssl.org/source/openssl-3.5.0.tar.gz && tar -xzvf openssl-3.5.0.tar.gz
+
+RUN cd openssl-3.5.0 && ./config enable-fips enable-ssl-trace && make -j`nproc` && make install
+ENV LD_LIBRARY_PATH=/usr/local/lib/:/usr/local/lib64/
+RUN openssl fipsinstall -out /usr/local/ssl/fipsmodule.cnf -module /usr/local/lib64/ossl-modules/fips.so
+
+RUN rm /usr/local/ssl/openssl.cnf
+RUN echo -e "openssl_conf = openssl_init \n\
+\n\
+.include /usr/local/ssl/fipsmodule.cnf \n\
+\n\
+[openssl_init] \n\
+providers = provider_sect \n\
+alg_section = algorithm_sect \n\
+\n\
+[provider_sect] \n\
+fips = fips_sect \n\
+base = base_sect \n\
+\n\
+[base_sect] \n\
+activate = 1 \n\
+\n\
+[algorithm_sect] \n\
+default_properties = fips=yes" > /usr/local/ssl/openssl.cnf
 
 WORKDIR /actions-runner
 USER runner
