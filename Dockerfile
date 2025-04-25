@@ -33,6 +33,7 @@ ENV LD_LIBRARY_PATH=/usr/local/lib/:/usr/local/lib64/
 RUN openssl fipsinstall -out /usr/local/ssl/fipsmodule.cnf -module /usr/local/lib64/ossl-modules/fips.so
 
 RUN rm /usr/local/ssl/openssl.cnf
+
 RUN echo -e "openssl_conf = openssl_init \n\
 \n\
 .include /usr/local/ssl/fipsmodule.cnf \n\
@@ -50,6 +51,9 @@ activate = 1 \n\
 \n\
 [algorithm_sect] \n\
 default_properties = fips=yes" > /usr/local/ssl/openssl.cnf
+
+RUN ln -s /etc/ssl/certs/ca-certificates.crt /usr/local/ssl/cert.pem
+
 
 WORKDIR /actions-runner
 USER runner
