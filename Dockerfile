@@ -26,9 +26,9 @@ RUN \
   apt-get -y clean && \
   rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 #FIPS
-RUN wget https://www.openssl.org/source/openssl-3.5.0.tar.gz && tar -xzvf openssl-3.5.0.tar.gz
+RUN wget https://github.com/openssl/openssl/releases/download/openssl-3.5.5/openssl-3.5.5.tar.gz && tar -xzvf openssl-3.5.5.tar.gz
 
-RUN cd openssl-3.5.0 && ./config enable-fips enable-ssl-trace && make -j`nproc` && make install
+RUN cd openssl-3.5.5 && ./config enable-fips enable-ssl-trace && make -j`nproc` && make install
 ENV LD_LIBRARY_PATH=/usr/local/lib/:/usr/local/lib64/
 RUN openssl fipsinstall -out /usr/local/ssl/fipsmodule.cnf -module /usr/local/lib64/ossl-modules/fips.so
 
