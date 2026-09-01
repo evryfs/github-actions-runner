@@ -1,4 +1,4 @@
-FROM myoung34/github-runner:2.336.0-ubuntu-jammy
+FROM myoung34/github-runner:2.337.0-ubuntu-jammy
 ENV YARN_VERSION=1.22.19
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
@@ -26,7 +26,7 @@ RUN \
   apt-get -y clean && \
   rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
 #FIPS
-RUN wget https://github.com/openssl/openssl/releases/download/openssl-3.5.5/openssl-3.5.5.tar.gz && tar -xzvf openssl-3.5.5.tar.gz
+RUN wget https://github.com/openssl/openssl/releases/download/openssl-3.5.8/openssl-3.5.8.tar.gz && tar -xzvf openssl-3.5.8.tar.gz
 
 RUN cd openssl-3.5.5 && ./config enable-fips enable-ssl-trace && make -j`nproc` && make install
 ENV LD_LIBRARY_PATH=/usr/local/lib/:/usr/local/lib64/
