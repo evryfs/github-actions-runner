@@ -28,7 +28,7 @@ RUN \
 #FIPS
 RUN wget https://github.com/openssl/openssl/releases/download/openssl-3.5.8/openssl-3.5.8.tar.gz && tar -xzvf openssl-3.5.8.tar.gz
 
-RUN cd openssl-3.5.5 && ./config enable-fips enable-ssl-trace && make -j`nproc` && make install
+RUN cd openssl-3.5.8 && ./config enable-fips enable-ssl-trace && make -j`nproc` && make install
 ENV LD_LIBRARY_PATH=/usr/local/lib/:/usr/local/lib64/
 RUN openssl fipsinstall -out /usr/local/ssl/fipsmodule.cnf -module /usr/local/lib64/ossl-modules/fips.so
 
